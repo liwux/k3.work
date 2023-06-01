@@ -60,51 +60,6 @@ export default function SettingAction() {
       }}
     >
       <Switch>
-        <Match when={actionState.showSetting === "global"}>
-          <div class="<sm:max-h-10em max-h-14em overflow-y-auto">
-            <SettingItem icon="i-ri:lock-password-line" label="网站访问密码">
-              <input
-                type="password"
-                value={store.globalSettings.password}
-                class="input-box"
-                onInput={e => {
-                  setStore(
-                    "globalSettings",
-                    "password",
-                    (e.target as HTMLInputElement).value
-                  )
-                }}
-              />
-            </SettingItem>
-            <SettingItem icon="i-carbon:api" label="OpenAI Key">
-              <input
-                type="password"
-                value={store.globalSettings.APIKey}
-                class="input-box"
-                onInput={e => {
-                  setStore(
-                    "globalSettings",
-                    "APIKey",
-                    (e.target as HTMLInputElement).value
-                  )
-                }}
-              />
-            </SettingItem>
-            <SettingItem icon="i-carbon:keyboard" label="Enter 键发送消息">
-              <SwitchButton
-                checked={store.globalSettings.enterToSend}
-                onChange={e => {
-                  setStore(
-                    "globalSettings",
-                    "enterToSend",
-                    (e.target as HTMLInputElement).checked
-                  )
-                }}
-              />
-            </SettingItem>
-          </div>
-          <hr class="my-1 bg-slate-5 bg-op-15 border-none h-1px"></hr>
-        </Match>
         <Match when={actionState.showSetting === "session"}>
           <div class="<sm:max-h-10em max-h-14em overflow-y-auto">
             <Show when={store.sessionId !== "index"}>
@@ -126,6 +81,20 @@ export default function SettingAction() {
                 />
               </SettingItem>
             </Show>
+            <SettingItem icon="i-carbon:api" label="OpenAI Key">
+              <input
+                type="password"
+                value={store.globalSettings.APIKey}
+                class="input-box"
+                onInput={e => {
+                  setStore(
+                    "globalSettings",
+                    "APIKey",
+                    (e.target as HTMLInputElement).value
+                  )
+                }}
+              />
+            </SettingItem>
             <SettingItem
               icon="i-carbon:machine-learning-model"
               label="OpenAI 模型"
@@ -212,12 +181,10 @@ export default function SettingAction() {
         <div class="flex">
           <ActionItem
             onClick={() => {
-              setActionState("showSetting", k =>
-                k !== "global" ? "global" : "none"
-              )
+              window.open("https://support.qq.com/product/545447", "_blank")
             }}
-            icon="i-carbon:settings"
-            label="全局设置"
+            icon="i-carbon:help"
+            label="帮助"
           />
           <ActionItem
             onClick={() => {
@@ -234,6 +201,16 @@ export default function SettingAction() {
             <div class="flex">
               <ActionItem
                 onClick={() => {
+                  window.open(
+                    "https://oss.k3.work/liwux/zanshangma.jpg",
+                    "_blank"
+                  )
+                }}
+                icon="i-carbon:money"
+                label="打赏"
+              />
+              <ActionItem
+                onClick={() => {
                   setActionState("fakeRole", k => {
                     const _ = ["normal", "user", "assistant"] as FakeRoleUnion[]
                     return _[(_.indexOf(k) + 1) % _.length]
@@ -241,28 +218,6 @@ export default function SettingAction() {
                 }}
                 icon={roleIcons[actionState.fakeRole]}
                 label="伪装角色"
-              />
-              <ActionItem
-                onClick={async () => {
-                  setActionState("genImg", "loading")
-                  await exportJpg()
-                  setTimeout(() => setActionState("genImg", "normal"), 1000)
-                }}
-                icon={imgIcons[actionState.genImg]}
-                label="导出图片"
-              />
-              <ActionItem
-                label="导出MD"
-                onClick={async () => {
-                  await exportMD(store.messageList)
-                  setActionState("success", "markdown")
-                  setTimeout(() => setActionState("success", false), 1000)
-                }}
-                icon={
-                  actionState.success === "markdown"
-                    ? "i-carbon:status-resolved dark:text-yellow text-yellow-6"
-                    : "i-ri:markdown-line"
-                }
               />
               <ActionItem
                 onClick={() => {
@@ -397,60 +352,6 @@ function ActionItem(props: { onClick: any; icon: string; label?: string }) {
     >
       <button class={props.icon} title={props.label} />
     </div>
-  )
-}
-
-async function exportJpg() {
-  try {
-    const messageContainer = document.querySelector(
-      "#message-container-img"
-    ) as HTMLElement
-    const header = document.querySelector("header") as HTMLElement
-    async function downloadIMG() {
-      const url = await toJpeg(messageContainer)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `ChatGPT-${dateFormat(new Date(), "HH-MM-SS")}.jpg`
-      a.click()
-    }
-    if (!isMobile() && navigator.clipboard) {
-      try {
-        const blob = await toBlob(messageContainer)
-        blob &&
-          (await navigator.clipboard.write([
-            new ClipboardItem({
-              [blob.type]: blob
-            })
-          ]))
-      } catch (e) {
-        await downloadIMG()
-      }
-    } else {
-      await downloadIMG()
-    }
-    setActionState("genImg", "success")
-  } catch {
-    setActionState("genImg", "error")
-  }
-}
-
-async function exportMD(messages: ChatMessage[]) {
-  const _ = messages.reduce((acc, k) => {
-    if (k.role === "assistant" || k.role === "user") {
-      if (k.role === "user") {
-        acc.push([k])
-      } else {
-        acc[acc.length - 1].push(k)
-      }
-    }
-    return acc
-  }, [] as ChatMessage[][])
-  await copyToClipboard(
-    _.filter(k => k.length === 2)
-      .map(k => {
-        return `> ${k[0].content}\n\n${k[1].content}`
-      })
-      .join("\n\n---\n\n")
   )
 }
 
