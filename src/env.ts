@@ -20,7 +20,7 @@ export const defaultEnv = {
   },
   CLIENT_DEFAULT_MESSAGE: `Powered by Liwux
   - 如果对你有所帮助，来给小火车 [加点动力](https://oss.k3.work/liwux/zanshangma.jpg)。
-  - 关注微信公众号：智慧的小火车(https://oss.k3.work/liwux/qrcodezhdxhc.jpg) ，获取ChatGPT账号及其他资源。
+  - 关注微信公众号：[智慧的小火车](https://oss.k3.work/liwux/qrcodezhdxhc.jpg) ，获取ChatGPT账号及其他资源。
   - 现在支持多个对话，打开对话设置，点击新建对话。在输入框里输入 [[/]][[/]] 或者 [[空格]][[空格]] 可以切换对话，搜索历史消息。
   - [[Shift]] + [[Enter]] 换行。开头输入 [[/]] 或者 [[空格]] 搜索 Prompt 预设。[[↑]] 可编辑最近一次提问。点击顶部名称滚动到顶部，点击输入框滚动到底部。
   `,
