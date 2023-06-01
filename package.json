@@ -1,7 +1,7 @@
 {
-  "name": "chatgpt-vercel",
+  "name": "k3.work",
   "version": "1.0.0",
-  "description": "Elegant and Powerful. Powered by OpenAI and Vercel",
+  "description": "中国版chatgpt",
   "type": "module",
   "license": "MIT",
   "scripts": {
