@@ -3,6 +3,7 @@ import ThemeToggle from "./ThemeToggle"
 import { RootStore, loadSession } from "~/store"
 import { Show, createMemo } from "solid-js"
 import { useNavigate } from "solid-start"
+import BaiduTongji from "./baidutongji"
 
 function splitEmoji(text: string) {
   const [icon, title] = text
@@ -74,7 +75,11 @@ export default function Header() {
           </Show>
         </div>
         <ThemeToggle />
+        <BaiduTongji />
       </header>
     </>
   )
+}
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.")
 }
