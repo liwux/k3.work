@@ -12,7 +12,7 @@ const BaiduTongji = () => {
     setScriptLoaded(true)
   })
 
-  return scriptLoaded() ? null : <div>Loading Baidu Tongji script...</div>
+  return scriptLoaded()
 }
 
 export default BaiduTongji
