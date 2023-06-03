@@ -181,19 +181,33 @@ export default function SettingAction() {
         <div class="flex">
           <ActionItem
             onClick={() => {
-              window.open("https://support.qq.com/product/545447", "_blank")
-            }}
-            icon="i-carbon:help"
-            label="帮助"
-          />
-          <ActionItem
-            onClick={() => {
               setActionState("showSetting", k =>
                 k !== "session" ? "session" : "none"
               )
             }}
             icon="i-carbon:settings-services"
             label="对话设置"
+          />
+          <ActionItem
+            onClick={() => {
+              let sessionID: string
+              do {
+                sessionID = generateId()
+              } while (getSession(sessionID))
+              setSession(sessionID, {
+                id: sessionID,
+                lastVisit: Date.now(),
+                settings: {
+                  ...defaultEnv.CLIENT_SESSION_SETTINGS,
+                  title: "新的对话"
+                },
+                messages: []
+              })
+              navigator(`/session/${sessionID}`)
+              loadSession(sessionID)
+            }}
+            icon="i-carbon:add-alt"
+            label="新的对话"
           />
         </div>
         <Switch
@@ -260,24 +274,10 @@ export default function SettingAction() {
             <div class="flex">
               <ActionItem
                 onClick={() => {
-                  let sessionID: string
-                  do {
-                    sessionID = generateId()
-                  } while (getSession(sessionID))
-                  setSession(sessionID, {
-                    id: sessionID,
-                    lastVisit: Date.now(),
-                    settings: {
-                      ...defaultEnv.CLIENT_SESSION_SETTINGS,
-                      title: "新的对话"
-                    },
-                    messages: []
-                  })
-                  navigator(`/session/${sessionID}`)
-                  loadSession(sessionID)
+                  window.open("https://support.qq.com/product/545447", "_blank")
                 }}
-                icon="i-carbon:add-alt"
-                label="新的对话"
+                icon="i-carbon:help"
+                label="帮助"
               />
               <Show when={store.sessionId !== "index"}>
                 <ActionItem
